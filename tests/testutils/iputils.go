@@ -83,8 +83,26 @@ func GetIPsv6(iface string) ([]string, error) {
 }
 
 func GetGW(iface string, family int) (string, error) {
-	return "", fmt.Errorf("Not implemented")
+	var ret string
+	l, err := netlink.LinkByName(iface)
+	if err != nil {
+		return "", err
+	}
+
+	routes, err := netlink.RouteList(l, family)
+	if err != nil {
+		return "", err
+	}
+
+	for i, _ := range routes {
+		ret = routes[i].Gw.String()
+		if strings.Contains(ret, ".") {
+			break
+		}
+	}
+	return ret, nil
 }
+
 func GetGWv4(iface string) (string, error) {
 	return GetGW(iface, netlink.FAMILY_V4)
 }
