@@ -212,15 +212,15 @@ func TestNetGWv4Connectivity(t *testing.T) {
 		httpServeAddr := fmt.Sprintf("0.0.0.0:%v", httpPort)
 		httpServeTimeout := 30
 
-		nonLoIPv4, err := testutils.GetNonLoIfaceIPv4()
+		nonLoIPv4Iface, err := testutils.GetNonLoIfaceIPv4()
 		if err != nil {
 			t.Fatalf("%v", err)
 		}
-		if nonLoIPv4 == "" {
+		if nonLoIPv4Iface == "" {
 			t.Skipf("Can not find any NAT'able IPv4 on the host, skipping..")
 		}
 
-		gw, err := testutils.GetGWv4(nonLoIPv4)
+		gw, err := testutils.GetGWv4(nonLoIPv4Iface)
 		if gw == "" {
 			t.Skipf("Can not find any gateway, skipping..")
 		}

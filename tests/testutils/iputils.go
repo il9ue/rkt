@@ -17,6 +17,7 @@ package testutils
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"net"
 	"os"
 	"regexp"
@@ -94,7 +95,8 @@ func GetGW(iface string, family int) (string, error) {
 		return "", err
 	}
 
-	for i, _ := range routes {
+	perm := rand.Perm(len(routes))
+	for i, _ := range perm {
 		ret = routes[i].Gw.String()
 		if strings.Contains(ret, ".") {
 			break
